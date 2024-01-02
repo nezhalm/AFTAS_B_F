@@ -1,0 +1,79 @@
+
+
+<div class="overflow-hidden rounded-lg border border-gray-200 shadow-md m-5">
+
+  <button class="bg-[#1d4ed8] text-white font-semibold px-4 py-2 rounded-lg m-4" (click)="showAddForm = true">Add level</button>
+
+<!--            <button  (click)="showAddForm = true" class="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600  sm:mt-0 inline-flex items-start justify-start px-6 py-3 bg-indigo-700 mt-3 hover:bg-indigo-600 focus:outline-none rounded ">-->
+<!--              <p class="m-4 text-sm font-medium leading-none text-white">Add Level</p>-->
+<!--            </button>-->
+
+  <div [class.hidden]="!showAddForm" class="popup-form p-4">
+    <h2 class="text-lg font-semibold">{{ operation === 'add' ? 'Ajouter' : 'Modifier' }} un niveau</h2>
+    <form [formGroup]="levelForm" (ngSubmit)="operation === 'add' ? addLevel() : updateLevel()" class="py-6 px-9">
+      <div class="mb-5">
+        <label for="description" class="mb-3 block text-base font-medium text-[#07074D]">
+          Description
+        </label>
+        <input type="text" name="description" id="description" formControlName="description"
+               placeholder="description level" required
+               class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
+      </div>
+      <div class="mb-5">
+        <label for="minPoints">minPoints</label>
+        <input type="number" id="minPoints" formControlName="minPoints" placeholder="minPoints"
+               class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
+      </div>
+      <div class="mb-5">
+        <label for="maxPoints">maxPoints</label>
+        <input type="number" id="maxPoints" formControlName="maxPoints" placeholder="maxPoints"
+               class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
+      </div>
+      <div class="mb-5 flex space-x-8">
+        <button
+                type="submit"
+                class="hover:shadow-form w-30 rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">
+                {{ operation === 'add' ? 'Ajouter' : 'Modifier' }}
+        </button>
+        <button type="button" (click)="cancelAddOrEdit()"
+                class="hover:shadow-form w-30 rounded-md bg-[#9D1818] py-3 px-8 text-center text-base font-semibold text-white outline-none">Annuler</button>
+      </div>
+    </form>
+  </div>
+  <table class="w-full border-collapse bg-white text-left text-sm text-gray-500">
+    <thead class="bg-gray-50">
+    <tr>
+      <th scope="col" class="px-6 py-4 font-medium text-gray-900 ">ID</th>
+      <th scope="col" class="px-6 py-4 font-medium text-gray-900">Description</th>
+      <th scope="col" class="px-6 py-4 font-medium text-gray-900">minPoints</th>
+      <th scope="col" class="px-6 py-4 font-medium text-gray-900">maxPoints</th>
+      <th scope="col" class="px-6 py-4 font-medium text-gray-900" style="text-align: center;">Action</th>
+    </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-100 border-t border-gray-100">
+    <tr class="hover:bg-gray-50" *ngFor="let level of levels.levels">
+      <td class="px-6 py-4">{{ level.id }}</td>
+      <td class="px-6 py-4">{{ level.description }}</td>
+      <td class="px-6 py-4">{{ level.minPoints }}</td>
+      <td class="px-6 py-4">{{ level.maxPoints }}</td>
+      <td class="px-6 py-4">
+
+        <div class="flex justify-center gap-4">
+          <a x-data="{ tooltip: 'Edite' }"  (click)="editLevel(level)" >
+            <td class="pl-4">
+              <button  (click)="showAddForm = true" selectedLevel = level class="focus:ring-2 focus:ring-offset-2 focus:ring-red-300 text-sm leading-none text-gray-100 py-3 px-5 bg-[#1d4ed8] rounded hover:bg-gray-200 hover:text-gray-900 focus:outline-none">update</button>
+            </td>
+          </a>
+          <a x-data="{ tooltip: 'Delete' }" >
+            <td class="pl-4">
+              <button (click)="deleteLevel(level.id)" class="focus:ring-2 focus:ring-offset-2 focus:ring-red-300 text-sm leading-none text-gray-100 py-3 px-5 bg-[#1d4ed8] hover:text-gray-900 rounded hover:bg-gray-200 focus:outline-none">delete</button>
+            </td>
+          </a>
+        </div>
+      </td>
+    </tr>
+
+    </tbody>
+  </table>
+</div>
+
